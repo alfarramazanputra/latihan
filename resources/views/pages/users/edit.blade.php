@@ -1,52 +1,56 @@
 @extends('layout.main')
 
 @section('content')
-    <!-- Breadcrumb -->
-    <div class="text-sm breadcrumbs">
-        <ul>
-            <li><a href="/">Dashboard</a></li>
-            <li><a href="{{ route('users.index') }}">User</a></li>
-            <li class="text-gray-500">Edit</li>
-        </ul>
-    </div>
 
-    <h1 class="text-2xl font-semibold text-gray-800 mb-4">EDIT USER</h1>
+<!-- Breadcrumb -->
+<nav aria-label="breadcrumb" class="mb-4">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/">Dashboard</a></li>
+        <li class="breadcrumb-item"><a href="{{ route('users.index') }}">User</a></li>
+        <li class="breadcrumb-item active text-muted" aria-current="page">Edit</li>
+    </ol>
+</nav>
 
-    <!-- Form -->
-    <div class="mt-8 p-5 shadow bg-white rounded">
+<h1 class="h4 fw-bold text-dark mb-4">Edit User</h1>
+
+<!-- Form -->
+<div class="card shadow-sm border-0">
+    <div class="card-body">
         <form action="{{ route('users.update', $userId['id']) }}" method="POST">
             @csrf
             @method('PATCH')
-            <div class="grid grid-cols-2 gap-4">
-                <div>
-                    <label for="name" class="block font-medium">Nama</label>
-                    <input type="text" id="name" name="name" value="{{ $userId['name'] }}" required class="input input-bordered w-full mt-2" />
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <label for="name" class="form-label">Nama</label>
+                    <input type="text" id="name" name="name" class="form-control" value="{{ $userId['name'] }}" required>
                 </div>
 
-                <div>
-                    <label for="email" class="block font-medium">Email</label>
-                    <input type="email" id="email" name="email" value="{{ $userId['email'] }}" required class="input input-bordered w-full mt-2" />
+                <div class="col-md-6">
+                    <label for="email" class="form-label">Email</label>
+                    <input type="email" id="email" name="email" class="form-control" value="{{ $userId['email'] }}" required>
                 </div>
 
-                <div>
-                    <label for="role" class="block font-medium">Role</label>
-                    <select id="role" name="role" class="select select-bordered w-full mt-2">
+                <div class="col-md-6">
+                    <label for="role" class="form-label">Role</label>
+                    <select id="role" name="role" class="form-select">
                         <option disabled selected>Pilih Role</option>
                         <option value="admin" {{ $userId['role'] == 'admin' ? 'selected' : '' }}>Admin</option>
                         <option value="petugas" {{ $userId['role'] == 'petugas' ? 'selected' : '' }}>Petugas</option>
                     </select>
                 </div>
 
-                <div>
-                    <label for="password" class="block font-medium">Password (opsional)</label>
-                    <input type="password" id="password" name="password" class="input input-bordered w-full mt-2" />
+                <div class="col-md-6">
+                    <label for="password" class="form-label">Password <small class="text-muted">(opsional)</small></label>
+                    <input type="password" id="password" name="password" class="form-control">
                 </div>
             </div>
 
-            <div class="flex justify-end mt-6">
-                <a href="{{ route('users.index') }}" class="btn btn-error px-8 m-2 text-white">Batal</a>
-                <button type="submit" class="btn btn-primary px-8 m-2 text-white">Simpan</button>
+            <div class="d-flex justify-content-end mt-4">
+                <a href="{{ route('users.index') }}" class="btn btn-danger me-2">Batal</a>
+                <button type="submit" class="btn btn-primary">Simpan</button>
             </div>
         </form>
     </div>
+</div>
+
 @endsection

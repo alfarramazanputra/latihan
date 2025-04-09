@@ -1,85 +1,94 @@
 @extends('layout.main')
 
 @section('content')
-<div class="bg-white p-6 rounded-2xl shadow-md space-y-6">
+<div class="container bg-white p-4 rounded shadow mb-4">
+
     <!-- Tombol Aksi -->
-    <div class="flex gap-3">
-        <a href="{{ route('sales.index') }}" class="bg-gray-700 hover:bg-gray-800 text-white px-4 py-2 rounded-md transition">← Kembali</a>
+    <div class="mb-3">
+        <a href="{{ route('sales.index') }}" class="btn btn-dark">
+            <i class="bi bi-arrow-left me-1"></i> Kembali
+        </a>
     </div>
 
     <!-- Header Invoice -->
-    <div class="flex justify-between items-center border-b pb-3">
+    <div class="d-flex justify-content-between align-items-center border-bottom pb-2 mb-3">
         <div>
-            <h2 class="text-xl font-bold text-gray-800">Invoice #{{ $saleData['sale_id'] }}</h2>
-            <p class="text-sm text-gray-500">{{ \Carbon\Carbon::parse($saleData['date'])->translatedFormat('d F Y') }}</p>
+            <h4 class="mb-0">Invoice #{{ $saleData['sale_id'] }}</h4>
+            <small class="text-muted">{{ \Carbon\Carbon::parse($saleData['date'])->translatedFormat('d F Y') }}</small>
         </div>
-        <div class="text-right">
-            <span class="inline-block bg-green-100 text-green-700 text-xs px-3 py-1 rounded-full">Sukses</span>
-        </div>
+        <span class="badge bg-success fs-6">Sukses</span>
     </div>
 
     <!-- Info Member -->
     @if ($saleData['member_id'])
-        <div class="bg-blue-50 border border-blue-100 p-4 rounded-xl grid sm:grid-cols-2 gap-3">
-            <div>
-                <p class="text-sm text-gray-500">Member Sejak</p>
-                <p class="font-semibold text-blue-800">{{ \Carbon\Carbon::parse($saleData['member_date'])->translatedFormat('d F Y') }}</p>
-            </div>
-            <div>
-                <p class="text-sm text-gray-500">Poin Tersisa</p>
-                <p class="font-semibold text-blue-800">{{ number_format($saleData['member_point'], 0, ',', '.') }}</p>
-            </div>
+    <div class="row g-3 mb-4 border p-3 rounded bg-light">
+        <div class="col-md-6">
+            <small class="text-muted">Member Sejak</small>
+            <p class="mb-0 fw-semibold">{{ \Carbon\Carbon::parse($saleData['member_date'])->translatedFormat('d F Y') }}</p>
         </div>
+        <div class="col-md-6">
+            <small class="text-muted">Poin Tersisa</small>
+            <p class="mb-0 fw-semibold">{{ number_format($saleData['member_point'], 0, ',', '.') }}</p>
+        </div>
+    </div>
     @endif
 
-    <!-- Produk -->
-    <div class="overflow-x-auto">
-        <table class="w-full text-sm border rounded-lg overflow-hidden shadow-sm">
-            <thead class="bg-gray-100 text-gray-600">
+    <!-- Tabel Produk -->
+    <div class="table-responsive mb-4">
+        <table class="table table-bordered align-middle">
+            <thead class="table-light">
                 <tr>
-                    <th class="px-4 py-3 text-left">Produk</th>
-                    <th class="px-4 py-3 text-left">Harga</th>
-                    <th class="px-4 py-3 text-left">Qty</th>
-                    <th class="px-4 py-3 text-left">Subtotal</th>
+                    <th>Produk</th>
+                    <th>Harga</th>
+                    <th>Qty</th>
+                    <th>Subtotal</th>
                 </tr>
             </thead>
-            <tbody class="bg-white">
+            <tbody>
                 @foreach ($saleData['products'] as $item)
-                    <tr class="border-t hover:bg-gray-50">
-                        <td class="px-4 py-2">{{ $item['product_name'] }}</td>
-                        <td class="px-4 py-2">Rp {{ number_format($item['price'], 0, ',', '.') }}</td>
-                        <td class="px-4 py-2">{{ $item['qty'] }}</td>
-                        <td class="px-4 py-2">Rp {{ number_format($item['price'] * $item['qty'], 0, ',', '.') }}</td>
-                    </tr>
+                <tr>
+                    <td>{{ $item['product_name'] }}</td>
+                    <td>Rp {{ number_format($item['price'], 0, ',', '.') }}</td>
+                    <td>{{ $item['qty'] }}</td>
+                    <td>Rp {{ number_format($item['price'] * $item['qty'], 0, ',', '.') }}</td>
+                </tr>
                 @endforeach
             </tbody>
         </table>
     </div>
 
     <!-- Info Pembayaran -->
-    <div class="grid sm:grid-cols-2 md:grid-cols-4 gap-4 bg-gray-50 p-4 rounded-xl border border-gray-200">
-        @foreach ([
-            'Poin Digunakan' => $saleData['point_used'],
-            'Tunai' => 'Rp ' . number_format($saleData['amount_paid'], 0, ',', '.'),
-            'Kembalian' => 'Rp ' . number_format($saleData['change'], 0, ',', '.'),
-            'Oleh' => $saleData['created_by']
-        ] as $label => $value)
-            <div>
-                <p class="text-xs text-gray-500">{{ $label }}</p>
-                <p class="text-base font-semibold text-gray-800">{{ $value }}</p>
-            </div>
-        @endforeach
+    <div class="row g-3 mb-4">
+        <div class="col-md-3">
+            <small class="text-muted">Poin Digunakan</small>
+            <p class="mb-0 fw-semibold">{{ $saleData['point_used'] }}</p>
+        </div>
+        <div class="col-md-3">
+            <small class="text-muted">Tunai</small>
+            <p class="mb-0 fw-semibold">Rp {{ number_format($saleData['amount_paid'], 0, ',', '.') }}</p>
+        </div>
+        <div class="col-md-3">
+            <small class="text-muted">Kembalian</small>
+            <p class="mb-0 fw-semibold">Rp {{ number_format($saleData['change'], 0, ',', '.') }}</p>
+        </div>
+        <div class="col-md-3">
+            <small class="text-muted">Oleh</small>
+            <p class="mb-0 fw-semibold">{{ $saleData['created_by'] }}</p>
+        </div>
     </div>
 
     <!-- Total -->
-    <div class="bg-gradient-to-r from-gray-800 to-gray-700 text-white p-5 rounded-xl flex justify-between items-center shadow">
-        <p class="text-lg font-medium">TOTAL</p>
-        <div class="text-right">
+    <div class="bg-dark text-white p-4 rounded d-flex justify-content-between align-items-center">
+        <div>
+            <p class="mb-0 fs-5">TOTAL</p>
+        </div>
+        <div class="text-end">
             @if ($saleData['point_used'] > 0)
-                <p class="text-xl line-through text-white/60">Rp {{ number_format($saleData['sub_total'], 0, ',', '.') }}</p>
+            <p class="mb-0 text-decoration-line-through text-secondary small">Rp {{ number_format($saleData['sub_total'], 0, ',', '.') }}</p>
             @endif
-            <p class="text-2xl font-bold">Rp {{ number_format($saleData['total'], 0, ',', '.') }}</p>
+            <h4 class="mb-0">Rp {{ number_format($saleData['total'], 0, ',', '.') }}</h4>
         </div>
     </div>
+
 </div>
 @endsection

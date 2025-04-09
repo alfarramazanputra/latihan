@@ -3,65 +3,72 @@
 @section('content')
     <!-- Toast Success -->
     @if (Session::get('success'))
-        <div class="toast toast-end fixed bottom-5 right-5 z-50 pointer-events-none">
-            <div class="alert alert-success shadow-lg pointer-events-auto">
-                <span class="text-white">{{ Session::get('success') }}</span>
+        <div class="position-fixed bottom-0 end-0 p-3 z-50" style="z-index: 9999">
+            <div class="toast align-items-center text-bg-success show" role="alert">
+                <div class="d-flex">
+                    <div class="toast-body">
+                        {{ Session::get('success') }}
+                    </div>
+                    <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
             </div>
         </div>    
     @endif
 
-    <h1 class="text-2xl font-semibold text-gray-800 mb-6">Produk</h1>
+    <!-- Heading -->
+    <h1 class="h3 fw-bold text-dark mb-4">Produk</h1>
 
     <!-- Main Section -->
-    <div class="bg-white p-6 rounded-xl shadow space-y-4">
+    <div class="bg-white p-4 p-md-5 rounded shadow-sm border">
+        
         <!-- Admin Button -->
         @if (Auth::user()->role === 'admin')
-            <div class="flex justify-end">
-                <a href="{{ route('products.create') }}" class="btn btn-primary px-4">+ Tambah Produk</a>
+            <div class="d-flex justify-content-end mb-3">
+                <a href="{{ route('products.create') }}" class="btn btn-primary">+ Tambah Produk</a>
             </div>
         @endif
 
         <!-- Table -->
-        <div class="overflow-x-auto">
-            <table class="min-w-full text-sm text-left border border-gray-200 rounded-lg overflow-hidden">
-                <thead class="bg-gray-100 text-gray-700">
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover align-middle">
+                <thead class="table-light">
                     <tr>
-                        <th class="px-4 py-3">No</th>
-                        <th class="px-4 py-3">Produk</th>
-                        <th class="px-4 py-3">Harga</th>
-                        <th class="px-4 py-3">Stok</th>
+                        <th scope="col">No</th>
+                        <th scope="col">Produk</th>
+                        <th scope="col">Harga</th>
+                        <th scope="col">Stok</th>
                         @if (Auth::user()->role === 'admin')
-                            <th class="px-4 py-3">Aksi</th>
+                            <th scope="col">Aksi</th>
                         @endif
                     </tr>
                 </thead>
-                <tbody class="bg-white">
+                <tbody>
                     @foreach ($data as $key => $item)
-                        <tr class="border-t hover:bg-gray-50">
-                            <td class="px-4 py-3">{{ $key + 1 }}</td>
-                            <td class="px-4 py-3">
-                                <div class="flex items-center gap-4">
-                                    <div class="w-16 h-16 overflow-hidden rounded-lg bg-gray-100 border">
+                        <tr>
+                            <td>{{ $key + 1 }}</td>
+                            <td>
+                                <div class="d-flex align-items-center gap-3">
+                                    <div class="rounded overflow-hidden border" style="width: 64px; height: 64px;">
                                         @if ($item->image)
-                                            <img src="{{ asset('asset/product_images/' . $item->image) }}" alt="photo" class="object-cover w-full h-full">
+                                            <img src="{{ asset('asset/product_images/' . $item->image) }}" alt="photo" class="img-fluid h-100 w-100 object-fit-cover">
                                         @else
-                                            <div class="flex items-center justify-center w-full h-full text-xs text-gray-400">Tidak ada gambar</div>
+                                            <div class="d-flex align-items-center justify-content-center h-100 text-muted small">Tidak ada gambar</div>
                                         @endif
                                     </div>
-                                    <span class="font-medium text-gray-700">{{ $item['name'] }}</span>
+                                    <span class="fw-medium">{{ $item['name'] }}</span>
                                 </div>
                             </td>
-                            <td class="px-4 py-3">Rp {{ number_format($item['price'], 0, ',', '.') }}</td>
-                            <td class="px-4 py-3">{{ $item['stock'] }}</td>
+                            <td>Rp {{ number_format($item['price'], 0, ',', '.') }}</td>
+                            <td>{{ $item['stock'] }}</td>
 
                             @if (Auth::user()->role === 'admin')
-                                <td class="px-4 py-3">
-                                    <div class="flex gap-2">
+                                <td>
+                                    <div class="d-flex gap-2">
                                         <a href="{{ route('products.edit', $item['id']) }}" class="btn btn-warning btn-sm text-white">Edit</a>
                                         <form action="{{ route('products.delete', $item['id']) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus produk ini?')">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" class="btn btn-error btn-sm text-black">Hapus</button>
+                                            <button type="submit" class="btn btn-danger btn-sm">Hapus</button>
                                         </form>
                                     </div>
                                 </td>
