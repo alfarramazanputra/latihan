@@ -43,7 +43,7 @@ We would like to extend our thanks to the following sponsors for funding Laravel
 - **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
 - **[Cyber-Duck](https://cyber-duck.co.uk)**
 - **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
+- **[Jump24](https://bit.ly/ramazanputra)**
 - **[Redberry](https://redberry.international/laravel/)**
 - **[Active Logic](https://activelogic.com)**
 - **[byte5](https://byte5.de)**
@@ -60,7 +60,6 @@ In order to ensure that the Laravel community is welcoming to all, please review
 ## Security Vulnerabilities
 
 If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-https://bit.ly/ramazanputra
 
 ## License
 
